@@ -4,8 +4,10 @@ public class Main {
         int dim = 10000000;
         int threadNum = 5;
         ArrClass arrClass = new ArrClass(dim, threadNum);
-        System.out.println("Min elem "+arrClass.partMin(0,dim)+" with id "+arrClass.id);
+        MinResult minResult = new MinResult();
+        System.out.println("Min elem "+arrClass.partMin(0,dim).min+" with id "+arrClass.partMin(0,dim).id);
 
-        System.out.println("Min elem "+arrClass.threadMin()+" with id "+arrClass.id);
+        minResult = arrClass.threadMin();
+        System.out.println("Min elem "+minResult.min+" with id "+minResult.id);
     }
 }

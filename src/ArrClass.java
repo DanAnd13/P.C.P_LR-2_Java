@@ -4,7 +4,7 @@ public class ArrClass {
     private final int dim;
     private final int threadNum;
     public final int[] arr;
-    public int id;
+    public MinResult id;
     public Random random = new Random();
 
     public ArrClass(int dim, int threadNum) {
@@ -12,25 +12,25 @@ public class ArrClass {
         arr = new int[dim];
         this.threadNum = threadNum;
         for(int i = 0; i < dim; i++){
-            arr[i] = i;
+            arr[i] = dim - i;
         }
         arr[random.nextInt(dim)] = -1;
     }
-
-    public int partMin(int startIndex, int finishIndex){
-        int min = dim;
+    public MinResult partMin(int startIndex, int finishIndex){
+        MinResult minResult = new MinResult();
+        minResult.min = arr[startIndex];
+        minResult.id = startIndex;
         for(int i = startIndex; i < finishIndex; i++){
-            if(min > arr[i]) {
-                min = arr[i];
-                id = i;
+            if(minResult.min > arr[i]) {
+                minResult.min = arr[i];
+                minResult.id = i;
             }
         }
-        return min;
+        return minResult;
     }
+    MinResult min;
 
-    private int min = 9_999_999_9;
-
-    synchronized private int getMin() {
+    synchronized private MinResult getMin() {
         while (getThreadCount()<threadNum){
             try {
                 wait();
@@ -41,9 +41,14 @@ public class ArrClass {
         return min;
     }
 
-    synchronized public void collectMin(int minElem){
-        if(min > minElem)
+    synchronized public void collectMin(MinResult minElem) {
+        //MinResult minResult =new MinResult();
+        if (threadCount != 0) {
+            if (min.min > minElem.min)
+                min = minElem;
+        } else {
             min = minElem;
+        }
     }
 
     private int threadCount = 0;
@@ -56,7 +61,7 @@ public class ArrClass {
         return threadCount;
     }
 
-    public int threadMin(){
+    public MinResult threadMin(){
         ThreadMin[] threadMin = new ThreadMin[threadNum];
         int partSize = dim / threadNum;
 
