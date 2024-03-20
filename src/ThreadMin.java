@@ -11,7 +11,7 @@ public class ThreadMin extends Thread{
 
     @Override
     public void run() {
-        long min = arrClass.partMin(startIndex, finishIndex);
+        int min = arrClass.partMin(startIndex, finishIndex);
         arrClass.collectMin(min);
         arrClass.incThreadCount();
     }

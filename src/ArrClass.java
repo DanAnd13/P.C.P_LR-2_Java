@@ -17,8 +17,8 @@ public class ArrClass {
         arr[random.nextInt(dim)] = -1;
     }
 
-    public long partMin(int startIndex, int finishIndex){
-        long min = 9_999_999_99;
+    public int partMin(int startIndex, int finishIndex){
+        int min = dim;
         for(int i = startIndex; i < finishIndex; i++){
             if(min > arr[i]) {
                 min = arr[i];
@@ -28,9 +28,9 @@ public class ArrClass {
         return min;
     }
 
-    private long min = 0;
+    private int min = 9_999_999_9;
 
-    synchronized private long getMin() {
+    synchronized private int getMin() {
         while (getThreadCount()<threadNum){
             try {
                 wait();
@@ -41,7 +41,7 @@ public class ArrClass {
         return min;
     }
 
-    synchronized public void collectMin(long minElem){
+    synchronized public void collectMin(int minElem){
         if(min > minElem)
             min = minElem;
     }
@@ -56,7 +56,7 @@ public class ArrClass {
         return threadCount;
     }
 
-    public long threadMin(){
+    public int threadMin(){
         ThreadMin[] threadMin = new ThreadMin[threadNum];
         int partSize = dim / threadNum;
 
